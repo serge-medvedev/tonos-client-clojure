@@ -3,7 +3,7 @@
             [ton.client.core :refer :all]))
 
 
-(def config "{\"network\": {\"server_address\": \"https://net.ton.dev\"}}")
+(def ^:const config "{\"network\": {\"server_address\": \"https://net.ton.dev\"}}")
 
 (deftest create-context-test
   (testing "context handle is returned"
@@ -15,8 +15,8 @@
   (testing "getting sdk version asynchronously"
     (let [context (create-context config)
           results (request context "client.version" "")]
-      (doseq [x results]
-        (-> x :params-json println))
-      ; (println (doall results))
+      ; (doseq [x results]
+      ;   (-> x :params-json println))
+      (is (-> (doall results) first :params-json :version (= "1.0.0") true?))
       (destroy-context context))))
 

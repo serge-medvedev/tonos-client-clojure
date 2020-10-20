@@ -9,12 +9,7 @@
 
 
 (def ^com.sun.jna.NativeLibrary tc (NativeLibrary/getInstance "ton_client"))
-
 (def request-id (atom 0))
-
-(defn- next-request-id
-  []
-  (swap! request-id inc))
 
 (defn create-context
   [config]
@@ -26,6 +21,10 @@
 (defn destroy-context
   [context]
   (.invoke (.getFunction tc "tc_destroy_context") Void (to-array [context])))
+
+(defn- next-request-id
+  []
+  (swap! request-id inc))
 
 (defn- lazy-seq-builder
   [c]

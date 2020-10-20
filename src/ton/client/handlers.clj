@@ -13,8 +13,7 @@
   :constructors {[] []}
   :state state
   :prefix "response-handler-"
-  :methods [[^{Override {}} callback [int ton.client.dto.StringData$ByValue int boolean] void]
-            [deref [] clojure.lang.LazySeq]])
+  :methods [[^{Override {}} callback [int ton.client.dto.StringData$ByValue int boolean] void]])
 
 (defn response-handler-init
   []
