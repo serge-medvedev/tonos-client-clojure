@@ -1,7 +1,7 @@
 (ns ton.client.core
   (:gen-class)
   (:require [cheshire.core :as json]
-            [clojure.core.async :as async])
+            [clojure.core.async :as async :refer [<!!]])
   (:import
     [com.sun.jna NativeLibrary Pointer Structure Callback]
     [ton.client.dto StringData]
@@ -10,6 +10,7 @@
 
 (def ^com.sun.jna.NativeLibrary tc (NativeLibrary/getInstance "ton_client"))
 (def request-id (atom 0))
+(def response-handler (ResponseHandler.))
 
 (defn create-context
   [config]
@@ -29,18 +30,18 @@
 (defn- lazy-seq-builder
   [c]
   (lazy-seq
-    (when-some [v (async/<!! c)]
+    (when-some [v (<!! c)]
       (let [tail (if (-> v :finished true?) nil (lazy-seq-builder c))]
         (cons v tail)))))
 
 (defn request
   [context function-name function-params-json]
-  (let [response-handler (ResponseHandler.)]
+  (let [request-id (next-request-id)]
+    (.setchan response-handler request-id)
     (.invoke (.getFunction tc "tc_request")
              Void
              (let [function-name (StringData$ByValue. function-name)
-                   function-params-json (StringData$ByValue. function-params-json)
-                   request-id (next-request-id)]
+                   function-params-json (StringData$ByValue. function-params-json)]
                (to-array [context function-name function-params-json request-id response-handler])))
-    (lazy-seq-builder (.state response-handler))))
+    (lazy-seq-builder (.getchan response-handler request-id))))
 

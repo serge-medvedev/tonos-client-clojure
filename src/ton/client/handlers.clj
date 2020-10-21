@@ -13,18 +13,30 @@
   :constructors {[] []}
   :state state
   :prefix "response-handler-"
-  :methods [[^{Override {}} callback [int ton.client.dto.StringData$ByValue int boolean] void]])
+  :methods [[^{Override {}} callback [int ton.client.dto.StringData$ByValue int boolean] void]
+            [setchan [int] void]
+            [getchan [int] Object]])
 
 (defn response-handler-init
   []
-  [[] (async/chan)])
+  [[] (atom {})])
 
 (defn response-handler-callback
   [this request-id params-json response-type finished]
-  (async/>!! (.state this)
-             {:request-id request-id
-              :params-json (-> params-json .toString (json/parse-string true))
-              :response-type response-type
-              :finished finished})
-  (Native/detach finished))
+  (async/put! (.getchan this request-id)
+              {:request-id request-id
+               :params-json (-> params-json .toString (json/parse-string true))
+               :response-type response-type
+               :finished finished})
+  (Native/detach false))
+
+(defn response-handler-setchan
+  [this request-id]
+  (let [k (-> request-id str keyword)]
+    (swap! (.state this) update k (fnil identity (async/chan)))))
+
+(defn response-handler-getchan
+  [this request-id]
+  (let [k (-> request-id str keyword)]
+    (-> this .state deref k)))
 
