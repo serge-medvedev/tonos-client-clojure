@@ -1,7 +1,8 @@
 (ns ton.client.core-test
-  (:require [clojure.test :refer :all]
-            [cheshire.core :as json]
-            [ton.client.core :refer :all]))
+  (:require
+    [clojure.test :refer :all]
+    [cheshire.core :as json]
+    [ton.client.core :refer :all]))
 
 
 (def ^:const config "{\"network\": {\"server_address\": \"https://net.ton.dev\"}}")
@@ -22,37 +23,37 @@
                                      :time t
                                      :expire e}}
                  :signer signer}]
-     (-> (request context "abi.encode_message" (json/generate-string params))
+     (-> (request context "abi.encode_message" params)
          doall
          first
          :params-json))))
 
-(deftest create-context-test
-  (testing "context handle is returned"
-    (let [context (create-context config)]
-      (is (true? (> context 0)))
-      (destroy-context context))))
+(def ^:dynamic *context* nil)
+
+(defn context-fixture
+  [f]
+  (binding [*context* (create-context config)]
+    (f)
+    (destroy-context *context*)))
+
+(use-fixtures :each context-fixture)
 
 (deftest request-test
   (testing "getting sdk version asynchronously"
-    (let [context (create-context config)]
-      (is (-> (request context "client.version" "")
-              doall
-              first
-              :params-json
-              :version (= "1.0.0") true?))
-      (destroy-context context))))
+    (is (-> (request *context* "client.version")
+            doall
+            first
+            :params-json
+            :version (= "1.0.0") true?))))
 
 (deftest send-message-test
   (testing "sending message"
-    (let [context (create-context config)
-          keypair (-> (request context "crypto.generate_random_sign_keys" "")
+    (let [keypair (-> (request *context* "crypto.generate_random_sign_keys")
                       doall
                       first
                       :params-json)
-          encoded (create-encoded-message context {:type "Keys" :keys keypair})]
-      (let [params {:message (:message encoded) :send_events true}
-            results (request context "processing.send_message" (json/generate-string params))]
-        (doseq [x results] (println x)))
-      (destroy-context context))))
+          encoded (create-encoded-message *context* {:type "Keys" :keys keypair})
+          params {:message (:message encoded) :send_events true}
+          results (request *context* "processing.send_message" params)]
+      (doseq [x results] (println x)))))
 

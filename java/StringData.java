@@ -10,15 +10,19 @@ public class StringData extends Structure {
     public static class ByValue extends StringData implements Structure.ByValue {
         public ByValue() {
             super();
+
             this.content = Pointer.NULL;
             this.len = 0;
         }
 
         public ByValue(String content) {
-            super();
-            this.content = new Memory(content.length() + 1);
-            this.content.setString(0, content);
-            this.len = content.length();
+            this();
+
+            if (!content.isEmpty()) {
+                this.len = content.length();
+                this.content = new Memory(this.len + 1);
+                this.content.setString(0, content);
+            }
         }
     }
 

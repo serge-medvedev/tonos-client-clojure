@@ -1,6 +1,7 @@
 (ns ton.client.handlers
-  (:require [cheshire.core :as json]
-            [clojure.core.async :as async])
+  (:require
+    [cheshire.core :as json]
+    [clojure.core.async :as async])
   (:import
     [com.sun.jna Callback Native]
     [ton.client.dto StringData]))
@@ -23,20 +24,22 @@
 
 (defn response-handler-callback
   [this request-id params-json response-type finished]
-  (async/put! (.getchan this request-id)
-              {:request-id request-id
-               :params-json (-> params-json .toString (json/parse-string true))
-               :response-type response-type
-               :finished finished})
-  (Native/detach false))
+  (let [c (.getchan this request-id)]
+    (async/put! c {:request-id request-id
+                   :params-json (-> params-json .toString (json/parse-string true))
+                   :response-type response-type
+                   :finished finished})
+    (when finished
+      (async/close! c)
+      (swap! (.state this) dissoc request-id)))
+  (Native/detach false)) ; Core Library uses a pool of threads to run callbacks,
+                         ; so the number of JVM threads staying attached is limited
 
 (defn response-handler-setchan
   [this request-id]
-  (let [k (-> request-id str keyword)]
-    (swap! (.state this) update k (fnil identity (async/chan)))))
+  (swap! (.state this) update request-id (fnil identity (async/chan))))
 
 (defn response-handler-getchan
   [this request-id]
-  (let [k (-> request-id str keyword)]
-    (-> this .state deref k)))
+  (-> this .state deref (get request-id)))
 

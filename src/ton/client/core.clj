@@ -1,7 +1,8 @@
 (ns ton.client.core
   (:gen-class)
-  (:require [cheshire.core :as json]
-            [clojure.core.async :as async :refer [<!!]])
+  (:require
+    [cheshire.core :as json]
+    [clojure.core.async :as async :refer [<!!]])
   (:import
     [com.sun.jna NativeLibrary Pointer Structure Callback]
     [ton.client.dto StringData]
@@ -31,17 +32,20 @@
   [c]
   (lazy-seq
     (when-some [v (<!! c)]
-      (let [tail (if (-> v :finished true?) nil (lazy-seq-builder c))]
-        (cons v tail)))))
+      (cons v (if (:finished v) nil (lazy-seq-builder c))))))
 
 (defn request
-  [context function-name function-params-json]
-  (let [request-id (next-request-id)]
-    (.setchan response-handler request-id)
-    (.invoke (.getFunction tc "tc_request")
-             Void
-             (let [function-name (StringData$ByValue. function-name)
-                   function-params-json (StringData$ByValue. function-params-json)]
-               (to-array [context function-name function-params-json request-id response-handler])))
-    (lazy-seq-builder (.getchan response-handler request-id))))
+  ([context function-name]
+    (request context function-name {}))
+  ([context function-name function-params]
+    (let [request-id (next-request-id)]
+      (.setchan response-handler request-id)
+      (.invoke (.getFunction tc "tc_request")
+               Void
+               (let [function-name (StringData$ByValue. function-name)
+                     function-params-json (-> function-params
+                                              json/generate-string
+                                              StringData$ByValue.)]
+                 (to-array [context function-name function-params-json request-id response-handler])))
+      (lazy-seq-builder (.getchan response-handler request-id)))))
 
