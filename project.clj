@@ -1,4 +1,4 @@
-(defproject ton-client "1.0.0-rc"
+(defproject org.clojars.serge-medvedev/ton-client "1.0.0-rc"
   :description "Clojure bindings to TON SDK's Core Client Library"
   :url "https://github.com/serge-medvedev/ton-client-clojure"
   :license {:name "Eclipse Public License"
