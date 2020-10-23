@@ -1,7 +1,7 @@
 (ns ton.client.core
   (:gen-class)
   (:require
-    [cheshire.core :as json]
+    [clojure.data.json :as json]
     [clojure.core.async :as async :refer [<!!]])
   (:import
     [com.sun.jna NativeLibrary Pointer Structure Callback]
@@ -18,7 +18,7 @@
   (let [config (StringData$ByValue. config)
         handle (.invoke (.getFunction tc "tc_create_context") Pointer (to-array [config]))
         result (.invoke (.getFunction tc "tc_read_string") ton.client.dto.StringData$ByValue (to-array [handle]))]
-    (-> result .toString (json/parse-string true) :result)))
+    (-> result .toString (json/read-str :key-fn keyword) :result)))
 
 (defn destroy-context
   [context]
@@ -35,16 +35,16 @@
       (cons v (if (:finished v) nil (lazy-seq-builder c))))))
 
 (defn request
-  ([context function-name]
-    (request context function-name {}))
-  ([context function-name function-params]
+  ([function-name context]
+    (request function-name context {}))
+  ([function-name context function-params]
     (let [request-id (next-request-id)]
       (.setchan response-handler request-id)
       (.invoke (.getFunction tc "tc_request")
                Void
                (let [function-name (StringData$ByValue. function-name)
                      function-params-json (-> function-params
-                                              json/generate-string
+                                              json/write-str
                                               StringData$ByValue.)]
                  (to-array [context function-name function-params-json request-id response-handler])))
       (lazy-seq-builder (.getchan response-handler request-id)))))

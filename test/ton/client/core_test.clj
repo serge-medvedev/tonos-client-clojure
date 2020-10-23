@@ -1,7 +1,11 @@
 (ns ton.client.core-test
   (:require
     [clojure.test :refer :all]
-    [cheshire.core :as json]
+    [clojure.data.json :as json]
+    [ton.client.abi :as abi]
+    [ton.client.client :as client]
+    [ton.client.crypto :as crypto]
+    [ton.client.processing :as processing]
     [ton.client.core :refer :all]))
 
 
@@ -16,17 +20,14 @@
    (let [pubkey (cond (= (:type signer) "Keys") (-> signer :keys :public)
                       (= (:type signer) "External") (:public_key signer))
          params {:abi {:type "Serialized"
-                       :value (json/parse-string events-abi true)}
+                       :value (json/read-str events-abi :key-fn keyword)}
                  :deploy_set {:tvc events-tvc}
                  :call_set {:function_name "constructor"
                             :header {:pubkey pubkey
                                      :time t
                                      :expire e}}
                  :signer signer}]
-     (-> (request context "abi.encode_message" params)
-         doall
-         first
-         :params-json))))
+     (-> (abi/encode-message context params) doall first :params-json))))
 
 (def ^:dynamic *context* nil)
 
@@ -38,22 +39,15 @@
 
 (use-fixtures :each context-fixture)
 
-(deftest request-test
+(deftest client-version-test
   (testing "getting sdk version asynchronously"
-    (is (-> (request *context* "client.version")
-            doall
-            first
-            :params-json
-            :version (= "1.0.0") true?))))
+    (is (-> (client/version *context*) doall first :params-json :version (= "1.0.0") true?))))
 
-(deftest send-message-test
+(deftest processing-send-message-test
   (testing "sending message"
-    (let [keypair (-> (request *context* "crypto.generate_random_sign_keys")
-                      doall
-                      first
-                      :params-json)
+    (let [keypair (-> (crypto/generate-random-sign-keys *context*) doall first :params-json)
           encoded (create-encoded-message *context* {:type "Keys" :keys keypair})
           params {:message (:message encoded) :send_events true}
-          results (request *context* "processing.send_message" params)]
+          results (processing/send-message *context* params)]
       (doseq [x results] (println x)))))
 

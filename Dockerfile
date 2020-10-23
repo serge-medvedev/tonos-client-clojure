@@ -17,5 +17,6 @@ RUN cd TON-SDK \
 FROM clojure:lein-buster
 
 COPY --from=sdk /usr/src/TON-SDK/target/release/libton_client.so /usr/lib/
-COPY --from=sdk /usr/src/TON-SDK/tools/api.json /tmp/
+
+ADD https://raw.githubusercontent.com/tonlabs/TON-SDK/1.0.0-rc/tools/api.json /tmp/api.json
 

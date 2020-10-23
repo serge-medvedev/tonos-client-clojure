@@ -1,6 +1,6 @@
 (ns ton.client.handlers
   (:require
-    [cheshire.core :as json]
+    [clojure.data.json :as json]
     [clojure.core.async :as async])
   (:import
     [com.sun.jna Callback Native]
@@ -26,7 +26,11 @@
   [this request-id params-json response-type finished]
   (let [c (.getchan this request-id)]
     (async/put! c {:request-id request-id
-                   :params-json (-> params-json .toString (json/parse-string true))
+                   :params-json (-> params-json
+                                    .toString
+                                    (json/read-str :key-fn keyword
+                                                   :eof-error? false
+                                                   :eof-value {}))
                    :response-type response-type
                    :finished finished})
     (when finished
