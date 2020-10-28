@@ -1,4 +1,4 @@
-package ton.client.dto;
+package tonos.client.dto;
 
 import com.sun.jna.Structure;
 import com.sun.jna.Pointer;

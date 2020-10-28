@@ -1,12 +1,12 @@
-(ns ton.client.core-test
+(ns tonos.client.core-test
   (:require
     [clojure.test :refer :all]
     [clojure.data.json :as json]
-    [ton.client.abi :as abi]
-    [ton.client.client :as client]
-    [ton.client.crypto :as crypto]
-    [ton.client.processing :as processing]
-    [ton.client.core :refer :all]))
+    [tonos.client.abi :as abi]
+    [tonos.client.client :as client]
+    [tonos.client.crypto :as crypto]
+    [tonos.client.processing :as processing]
+    [tonos.client.core :refer :all]))
 
 
 (def ^:const config "{\"network\": {\"server_address\": \"https://net.ton.dev\"}}")

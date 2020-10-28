@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /usr/src
 
-ENV TON_SDK_BRANCH=1.0.0-rc
+ENV TON_SDK_BRANCH=1.0.0
 
 RUN git clone -b $TON_SDK_BRANCH https://github.com/tonlabs/TON-SDK.git
 
@@ -18,5 +18,5 @@ FROM clojure:lein-buster
 
 COPY --from=sdk /usr/src/TON-SDK/target/release/libton_client.so /usr/lib/
 
-ADD https://raw.githubusercontent.com/tonlabs/TON-SDK/1.0.0-rc/tools/api.json /tmp/api.json
+ADD https://raw.githubusercontent.com/tonlabs/TON-SDK/1.0.0/tools/api.json /tmp/api.json
 

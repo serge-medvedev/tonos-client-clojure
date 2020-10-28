@@ -1,4 +1,4 @@
-(ns ton.client.codegen
+(ns tonos.client.codegen
   (:require
     [clojure.java.io :refer [file]]
     [clojure.data.json :as json]
@@ -10,8 +10,8 @@
 
 (def ^:const module-template
 "
-(ns ton.client.{{module-name}}
-  (:require [ton.client.core :refer [request]]))
+(ns tonos.client.{{module-name}}
+  (:require [tonos.client.core :refer [request]]))
 
 {{#functions}}
 (def {{fn-decorated-name}}
@@ -31,7 +31,7 @@
 (defn generate
   []
   (doseq [m (:modules api)]
-    (doto (file "target" "generated" "ton" "client" (str (:name m) ".clj"))
+    (doto (file "target" "generated" "tonos" "client" (str (:name m) ".clj"))
       (-> .getParentFile .mkdirs)
       (spit (->> m enrich-module-data (render module-template))))))
 

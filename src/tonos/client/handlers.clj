@@ -1,20 +1,19 @@
-(ns ton.client.handlers
+(ns tonos.client.handlers
   (:require
     [clojure.data.json :as json]
     [clojure.core.async :as async])
   (:import
-    [com.sun.jna Callback Native]
-    [ton.client.dto StringData]))
+    [com.sun.jna Callback Native]))
 
 
 (gen-class
-  :name ton.client.handlers.ResponseHandler
+  :name tonos.client.handlers.ResponseHandler
   :implements [com.sun.jna.Callback AutoCloseable]
   :init init
   :constructors {[] []}
   :state state
   :prefix "response-handler-"
-  :methods [[^{Override {}} callback [int ton.client.dto.StringData$ByValue int boolean] void]
+  :methods [[^{Override {}} callback [int tonos.client.dto.StringData$ByValue int boolean] void]
             [setchan [int] void]
             [getchan [int] Object]])
 

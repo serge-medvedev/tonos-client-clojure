@@ -1,12 +1,11 @@
-(ns ton.client.core
+(ns tonos.client.core
   (:gen-class)
   (:require
     [clojure.data.json :as json]
     [clojure.core.async :as async :refer [<!!]])
   (:import
-    [com.sun.jna NativeLibrary Pointer Structure Callback]
-    [ton.client.dto StringData]
-    [ton.client.handlers ResponseHandler]))
+    [com.sun.jna NativeLibrary Pointer]
+    [tonos.client.handlers ResponseHandler]))
 
 
 (def ^com.sun.jna.NativeLibrary tc (NativeLibrary/getInstance "ton_client"))
@@ -15,9 +14,9 @@
 
 (defn create-context
   [config]
-  (let [config (StringData$ByValue. config)
+  (let [config (tonos.client.dto.StringData$ByValue. config)
         handle (.invoke (.getFunction tc "tc_create_context") Pointer (to-array [config]))
-        result (.invoke (.getFunction tc "tc_read_string") ton.client.dto.StringData$ByValue (to-array [handle]))]
+        result (.invoke (.getFunction tc "tc_read_string") tonos.client.dto.StringData$ByValue (to-array [handle]))]
     (-> result .toString (json/read-str :key-fn keyword) :result)))
 
 (defn destroy-context
@@ -42,10 +41,10 @@
       (.setchan response-handler request-id)
       (.invoke (.getFunction tc "tc_request")
                Void
-               (let [function-name (StringData$ByValue. function-name)
+               (let [function-name (tonos.client.dto.StringData$ByValue. function-name)
                      function-params-json (-> function-params
                                               json/write-str
-                                              StringData$ByValue.)]
+                                              tonos.client.dto.StringData$ByValue.)]
                  (to-array [context function-name function-params-json request-id response-handler])))
       (lazy-seq-builder (.getchan response-handler request-id)))))
 
