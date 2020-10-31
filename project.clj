@@ -14,7 +14,8 @@
   :prep-tasks [["with-profile" "+gen,+dev" "run"] "javac" "compile"]
   :profiles {:dev {:dependencies [[org.clojure/clojure "1.10.0"]
                                   [cljstache "2.0.6"]]
-                   :source-paths ["src" "dev-src" "target/generated"]}
+                   :source-paths ["src" "dev-src" "target/generated"]
+                   :resource-paths ["dev-rc"]}
              :gen {:prep-tasks ^:replace []}}
   :plugins [[lein-cloverage "1.0.13"]
             [lein-shell "0.5.0"]

@@ -6,6 +6,7 @@ pom.xml.asc
 *.jar
 *.class
 *.log
+/dev-rc/funding-wallet.json
 /.lein-*
 /.nrepl-port
 /.idea
