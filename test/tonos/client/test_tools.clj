@@ -67,3 +67,15 @@
                (-> (net/wait-for-collection context params)
                    dorun)))))))))
 
+(defn fetch-account
+  [context account]
+  (let [params {:collection "accounts"
+                :filter {:id {:eq account}}
+                :result "id boc"
+                :timeout 60000}]
+    (-> (net/wait-for-collection context params)
+        doall
+        last
+        :params-json
+        :result)))
+
