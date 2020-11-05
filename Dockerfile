@@ -18,5 +18,11 @@ FROM clojure:lein-buster
 
 COPY --from=sdk /usr/src/TON-SDK/target/release/libton_client.so /usr/lib/
 
+WORKDIR /usr/src
+
+COPY . .
+
 ADD https://raw.githubusercontent.com/tonlabs/TON-SDK/1.0.0/tools/api.json /tmp/api.json
+
+RUN lein test :free
 
