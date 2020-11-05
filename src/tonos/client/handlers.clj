@@ -33,8 +33,7 @@
                    :response-type response-type
                    :finished finished})
     (when finished
-      (async/close! c)
-      (swap! (.state this) dissoc request-id)))
+      (async/close! c)))
   (Native/detach false)) ; Core Library uses a pool of threads to run callbacks,
                          ; so the number of JVM threads staying attached is limited
 
