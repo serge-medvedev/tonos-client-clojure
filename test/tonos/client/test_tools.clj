@@ -58,14 +58,13 @@
                      doall
                      last
                      :params-json
-                     :parsed)]
+                     :parsed)
+               params {:collection "transactions"
+                       :filter {:in_msg {:eq (:id m)}}
+                       :result "id"
+                       :timeout 60000}]
            (when (-> m :msg_type_name (= "internal"))
-             (let [params {:collection "transactions"
-                           :filter {:in_msg {:eq (:id m)}}
-                           :result "id"
-                           :timeout 60000}]
-               (-> (net/wait-for-collection context params)
-                   dorun)))))))))
+             (dorun (net/wait-for-collection context params)))))))))
 
 (defn fetch-account
   [context account]
