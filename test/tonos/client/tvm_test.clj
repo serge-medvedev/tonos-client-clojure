@@ -27,7 +27,7 @@
 
 (use-fixtures :once tf)
 
-(deftest heavy-run-*-methods-test
+(deftest ^:slow ^:paid heavy-run-*-methods-test
   (testing "making and checking subsription"
     (let [subscription-abi {:type "Serialized"
                             :value (-> tt/test-data :subscription :abi)}

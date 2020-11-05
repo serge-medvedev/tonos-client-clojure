@@ -32,7 +32,7 @@
               read-string
               (> 0))))))
 
-(deftest subscribe-collection-test
+(deftest ^:slow subscribe-collection-test
   (testing "receiving incoming message being subscribed"
     (let [params {:collection "messages"
                   :result "id"}

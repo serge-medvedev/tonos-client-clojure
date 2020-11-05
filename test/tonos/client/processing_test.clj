@@ -39,7 +39,7 @@
 
 (use-fixtures :each context-fixture)
 
-(deftest wait-for-transaction-test
+(deftest ^:slow ^:paid wait-for-transaction-test
   (testing "messge sending and waiting for transaction"
     (let [send-message-params {:message (:message *encoded*)
                                :send_events true}
@@ -61,7 +61,7 @@
                                 {:finalized false}))]
       (is (= result {:finalized true}))))))
 
-(deftest process-message-test
+(deftest ^:slow ^:paid process-message-test
   (testing "message processing"
     (let [params {:message_encode_params *message-encode-params*
                   :send_events true}

@@ -17,6 +17,11 @@
                    :source-paths ["src" "dev-src" "target/generated"]
                    :resource-paths ["dev-rc"]}
              :gen {:prep-tasks ^:replace []}}
+  :test-selectors {:slow :slow
+                   :fast (complement :slow)
+                   :paid :paid
+                   :free (complement :paid)
+                   :default (constantly true)}
   :plugins [[lein-cloverage "1.0.13"]
             [lein-shell "0.5.0"]
             [lein-ancient "0.6.15"]
