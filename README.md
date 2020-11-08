@@ -1,3 +1,5 @@
+[![Clojars Project](https://img.shields.io/clojars/v/org.clojars.serge-medvedev/tonos-client.svg)](https://clojars.org/org.clojars.serge-medvedev/tonos-client)
+
 # Clojure bindings to TON OS SDK's Core Client Library
 
 ## Why Clojure?
