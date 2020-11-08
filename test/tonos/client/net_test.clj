@@ -22,10 +22,7 @@
           params {:collection "accounts"
                   :filter {:id {:eq addr}}
                   :result "balance"}]
-      (is (-> (net/query-collection *context* params)
-              doall
-              last
-              :params-json
+      (is (-> (net/query-collection! *context* params)
               :result
               first
               :balance
@@ -51,10 +48,7 @@
     (let [params {:collection "messages"
                   :result "id"
                   :timeout 10000}]
-      (is (->> (net/wait-for-collection *context* params)
-               doall
-               last
-               :params-json
+      (is (->> (net/wait-for-collection! *context* params)
                :result
                :id
                (re-matches #"^[0-9a-f]+$"))))))

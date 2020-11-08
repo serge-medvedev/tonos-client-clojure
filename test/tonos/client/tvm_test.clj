@@ -18,10 +18,7 @@
     (let [params {:state_init {:type "StateInit"
                                :code (-> tt/test-data :elector :code)
                                :data (-> tt/test-data :elector :data)}}]
-      (binding [*elector-encoded* (-> (abi/encode-account *context* params)
-                                      doall
-                                      last
-                                      :params-json)]
+      (binding [*elector-encoded* (abi/encode-account! *context* params)]
         (f)
         (core/destroy-context *context*)))))
 
@@ -32,19 +29,13 @@
     (let [subscription-abi {:type "Serialized"
                             :value (-> tt/test-data :subscription :abi)}
           signer {:type "Keys"
-                  :keys (-> (crypto/generate-random-sign-keys *context*)
-                            doall
-                            last
-                            :params-json)}
+                  :keys (crypto/generate-random-sign-keys! *context*)}
           encode-message-params {:abi subscription-abi
                                  :deploy_set {:tvc (-> tt/test-data :subscription :tvc)}
                                  :call_set {:function_name "constructor"
                                             :input {:wallet "0:2222222222222222222222222222222222222222222222222222222222222222"}}
                                  :signer signer}
-          encoded (-> (abi/encode-message *context* encode-message-params)
-                      doall
-                      last
-                      :params-json)]
+          encoded (abi/encode-message! *context* encode-message-params)]
 
       (tt/fund-account *context* (:address encoded))
 
@@ -61,18 +52,12 @@
                                    :call_set {:function_name "subscribe"
                                               :input subscribe-params}
                                    :signer signer}
-            encoded (-> (abi/encode-message *context* encode-message-params)
-                        doall
-                        last
-                        :params-json)
+            encoded (abi/encode-message! *context* encode-message-params)
             run-executor-params {:abi subscription-abi
                                  :message (:message encoded)
                                  :account {:type "Account"
                                            :boc account}}
-            result (-> (tvm/run-executor *context* run-executor-params)
-                       doall
-                       last
-                       :params-json)]
+            result (tvm/run-executor! *context* run-executor-params)]
 
         (is (-> result
                 :transaction
@@ -89,17 +74,11 @@
                                      :call_set {:function_name "getSubscription"
                                                 :input {:subscriptionId (:subscriptionId subscribe-params)}}
                                      :signer signer}
-              encoded (-> (abi/encode-message *context* encode-message-params)
-                          doall
-                          last
-                          :params-json)
+              encoded (abi/encode-message! *context* encode-message-params)
               run-tvm-params {:abi subscription-abi
                               :account account
                               :message (:message encoded)}
-              result (-> (tvm/run-tvm *context* run-tvm-params)
-                         doall
-                         last
-                         :params-json)]
+              result (tvm/run-tvm! *context* run-tvm-params)]
           (is (-> result
                   :decoded
                   :output
@@ -115,10 +94,7 @@
   (testing "getting the list of participants of the elector"
     (let [params {:account (:account *elector-encoded*)
                   :function_name "participant_list"}]
-      (is (-> (tvm/run-get *context* params)
-              doall
-              last
-              :params-json
+      (is (-> (tvm/run-get! *context* params)
               :output
               first
               count-participants
@@ -132,19 +108,14 @@
                                      :address
                                      (string/split #":")
                                      last))}]
-      (is (-> (tvm/run-get *context* params)
-              doall
-              last
-              :params-json
+      (is (-> (tvm/run-get! *context* params)
               :output
               first
               (= "0")))))
   (testing "getting the past elections info from the elector"
     (let [params {:account (:account *elector-encoded*)
                   :function_name "past_elections"}]
-      (is (-> (tvm/run-get *context* params)
-              doall
-              last
-              (get-in [:params-json :output 0 0 0])
+      (is (-> (tvm/run-get! *context* params)
+              (get-in [:output 0 0 0])
               (= "1588268660"))))))
 

@@ -11,8 +11,8 @@
   [f]
   (-> f io/resource slurp (json/read-str :key-fn keyword)))
 
-(def ^:const dev-net-config "{\"network\": {\"server_address\": \"https://net.ton.dev\"}}")
-(def ^:const main-net-config "{\"network\": {\"server_address\": \"https://main.ton.dev\"}}")
+(def ^:const dev-net-config "{\"network\":{\"server_address\":\"https://net.ton.dev\"}}")
+(def ^:const main-net-config "{\"network\":{\"server_address\":\"https://main.ton.dev\"}}")
 (def test-data (read-json-rc "test-data.json"))
 (def funding-wallet (read-json-rc "funding-wallet.json"))
 (def keypair {:public "134c67910aa0bd4410e0b62379d517af13df99ba04764bca06e0ba86c736b80a",
@@ -32,10 +32,7 @@
                                      :time t
                                      :expire expire}}
                  :signer signer}]
-     (-> (abi/encode-message context params)
-         doall
-         last
-         :params-json))))
+     (abi/encode-message! context params))))
 
 (defn fund-account
   ([context account]
@@ -54,17 +51,14 @@
                  :send_events false}]
      (doseq [x (processing/process-message context params)]
        (doseq [boc (-> x :params-json :out_messages)]
-         (let [m (-> (boc/parse-message context {:boc boc})
-                     doall
-                     last
-                     :params-json
+         (let [m (-> (boc/parse-message! context {:boc boc})
                      :parsed)
                params {:collection "transactions"
                        :filter {:in_msg {:eq (:id m)}}
                        :result "id"
                        :timeout 60000}]
            (when (-> m :msg_type_name (= "internal"))
-             (dorun (net/wait-for-collection context params)))))))))
+             (net/wait-for-collection! context params))))))))
 
 (defn fetch-account
   [context account]
@@ -72,9 +66,6 @@
                 :filter {:id {:eq account}}
                 :result "id boc"
                 :timeout 60000}]
-    (-> (net/wait-for-collection context params)
-        doall
-        last
-        :params-json
+    (-> (net/wait-for-collection! context params)
         :result)))
 

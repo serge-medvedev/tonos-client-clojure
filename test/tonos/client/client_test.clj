@@ -18,19 +18,13 @@
 
 (deftest version-test
   (testing "getting client version"
-    (is (-> (client/version *context*)
-            doall
-            last
-            :params-json
+    (is (-> (client/version! *context*)
             :version
             (= "1.0.0")))))
 
 (deftest api-reference-test
   (testing "getting api reference"
-    (is (-> (client/get-api-reference *context*)
-            doall
-            last
-            :params-json
+    (is (-> (client/get-api-reference! *context*)
             :api
             nil?
             false?))))

@@ -16,23 +16,16 @@
                  :value (-> tt/test-data :events :abi)})
 (def events-tvc (-> tt/test-data :events :tvc))
 
-(defn- generate-random-keypair
-  [context]
-  (-> (crypto/generate-random-sign-keys context) doall last :params-json))
-
 (defn context-fixture
   [f]
   (binding [*context* (core/create-context tt/dev-net-config)]
-    (let [keypair (generate-random-keypair *context*)]
+    (let [keypair (crypto/generate-random-sign-keys! *context*)]
       (binding [*message-encode-params* {:abi events-abi
                                          :deploy_set {:tvc events-tvc}
                                          :call_set {:function_name "constructor"
                                                     :header {:pubkey (:public keypair)}}
                                          :signer {:type "Keys" :keys keypair}}]
-        (binding [*encoded* (-> (abi/encode-message *context* *message-encode-params*)
-                                doall
-                                last
-                                :params-json)]
+        (binding [*encoded* (abi/encode-message! *context* *message-encode-params*)]
           (tt/fund-account *context* (:address *encoded*))
           (f)
           (core/destroy-context *context*))))))

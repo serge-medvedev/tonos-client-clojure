@@ -16,14 +16,30 @@
 {{#functions}}
 (def {{fn-decorated-name}}
   (partial request \"{{module-name}}.{{fn-name}}\"))
+{{#short-form-eligible}}
+(defn {{fn-decorated-name}}!
+  [& args]
+  (-> (apply {{fn-decorated-name}} args)
+      doall
+      last
+      :params-json))
+{{/short-form-eligible}}
 
 {{/functions}}
 ")
 
+(defn- is-short-form-eligible
+  [f]
+  (let [black-list #{"subscribe_collection"
+                     "send_message"
+                     "wait_for_transaction"}]
+    (not (contains? black-list f))))
+
 (defn- enrich-module-data
   [m]
   (letfn [(enrich-fn-data [f]
-            (-> f (assoc :fn-decorated-name (string/replace (:name f) "_" "-"))
+            (-> f (assoc :short-form-eligible (is-short-form-eligible (:name f)))
+                  (assoc :fn-decorated-name (string/replace (:name f) "_" "-"))
                   (rename-keys {:name :fn-name})))]
     (-> m (assoc :functions (map enrich-fn-data (:functions m)))
           (rename-keys {:name :module-name}))))

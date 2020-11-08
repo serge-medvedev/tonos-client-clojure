@@ -23,10 +23,7 @@
                                   :url false
                                   :test false
                                   :bounce true}}]
-      (is (-> (utils/convert-address *context* params)
-              doall
-              last
-              :params-json
+      (is (-> (utils/convert-address! *context* params)
               :address
               (= "EQC0U+U65K4NgQRZLBEnKYrstje7cKC81WMiz3cxpmzh0sJJ"))))))
 
