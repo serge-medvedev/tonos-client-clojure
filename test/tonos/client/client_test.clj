@@ -20,12 +20,19 @@
   (testing "getting client version"
     (is (-> (client/version! *context*)
             :version
-            (= "1.0.0")))))
+            (= "1.1.0")))))
 
 (deftest api-reference-test
   (testing "getting api reference"
     (is (-> (client/get-api-reference! *context*)
             :api
+            nil?
+            false?))))
+
+(deftest build-info-test
+  (testing "getting the build info"
+    (is (-> (client/build-info! *context*)
+            :build_number
             nil?
             false?))))
 

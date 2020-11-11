@@ -26,7 +26,7 @@
   ([context signer t expire]
    (let [pubkey (cond (= (:type signer) "Keys") (-> signer :keys :public)
                       (= (:type signer) "External") (:public_key signer))
-         params {:abi {:type "Serialized"
+         params {:abi {:type "Contract"
                        :value (-> test-data :events :abi)}
                  :deploy_set {:tvc (-> test-data :events :tvc)}
                  :call_set {:function_name "constructor"

@@ -9,7 +9,7 @@
 
 (def ^:dynamic *context* nil)
 
-(def events-abi {:type "Serialized"
+(def events-abi {:type "Contract"
                  :value (-> tt/test-data :events :abi)})
 (def keys-signer {:type "Keys"
                   :keys tt/keypair})
@@ -121,6 +121,6 @@
                     :name "returnValue"
                     :value {:id 0}}]
       (is (-> (abi/decode-message-body! *context* params)
-              (update-in [:value :id] read-string)
+              (update-in [:value :id] read-string) ; to convert hex string to number
               (= expected))))))
 

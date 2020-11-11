@@ -12,7 +12,7 @@
 (def ^:dynamic *message-encode-params* nil)
 (def ^:dynamic *encoded* nil)
 
-(def events-abi {:type "Serialized"
+(def events-abi {:type "Contract"
                  :value (-> tt/test-data :events :abi)})
 (def events-tvc (-> tt/test-data :events :tvc))
 

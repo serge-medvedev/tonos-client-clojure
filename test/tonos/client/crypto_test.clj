@@ -236,6 +236,22 @@
               :ton_public_key
               (= "PuYTTGeRCqC9RBDgtiN51RevE9-ZugR2S8oG4LqGxza4Cv_l"))))))
 
+(deftest chacha20-test
+  (testing "data encryption/decryption"
+    (let [k (apply str (repeat 32 "01"))
+          nonce (apply str (repeat 12 "ff"))
+          data "VE9OIFNESyB2MS4xLjA="
+          encryption-params {:data data
+                             :key k
+                             :nonce nonce}
+          encrypted (crypto/chacha20! *context* encryption-params)
+          decryption-params {:data (:data encrypted)
+                             :key k
+                             :nonce nonce}
+          decrypted (crypto/chacha20! *context* decryption-params)]
+      (is (-> encrypted :data (= "2r4zSfBLWzboGlQZD9s=")))
+      (is (-> decrypted :data (= data))))))
+
 (deftest sha256-test
   (testing "getting sha256 sum"
     (is (-> (crypto/sha256! *context* {:data "VE9OIFNESyB2MS4wLjA="})

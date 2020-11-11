@@ -26,7 +26,7 @@
 
 (deftest ^:slow ^:paid heavy-run-*-methods-test
   (testing "making and checking subsription"
-    (let [subscription-abi {:type "Serialized"
+    (let [subscription-abi {:type "Contract"
                             :value (-> tt/test-data :subscription :abi)}
           signer {:type "Keys"
                   :keys (crypto/generate-random-sign-keys! *context*)}

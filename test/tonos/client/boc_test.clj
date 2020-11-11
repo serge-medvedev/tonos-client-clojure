@@ -49,6 +49,24 @@
               :value
               (= "0x13c9e2af662000"))))))
 
+(deftest get-boc-hash-test
+  (testing "getting the hash of a boc"
+    (let [params {:boc "te6ccgEBAQEAWAAAq2n+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE/zMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzSsG8DgAAAAAjuOu9NAL7BxYpA" }]
+      (is (-> (boc/get-boc-hash! *context* params)
+              :hash
+              (= "dfd47194f3058ee058bfbfad3ea40cbbd9ad17ca77cd0904d4d9f18a48c2fbca"))))))
+
+(deftest parse-shardstate-test
+  (testing "shard state parsing"
+    (let [params {:boc (-> tt/test-data :boc :shardstate)
+                  :workchain_id -1
+                  :id "zerostate:-1"}
+          result (-> (boc/parse-shardstate! *context* params)
+                     :parsed)]
+      (is (-> result :id (= (:id params))))
+      (is (-> result :workchain_id (= (:workchain_id params))))
+      (is (-> result :seq_no (= 0))))))
+
 (deftest get-blockchain-config-test
   (testing "getting blockchain config"
     (let [params {:block_boc (-> tt/test-data :boc :blockchain)}]
