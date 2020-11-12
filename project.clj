@@ -23,9 +23,10 @@
             [lein-shell "0.5.0"]
             [lein-ancient "0.6.15"]
             [lein-changelog "0.3.2"]]
-  :deploy-repositories [["snapshots" {:url "https://clojars.org"
-                                      :sign-releases false}]
-                        ["releases" :clojars]]
+  :deploy-repositories [["clojars" {:url "https://repo.clojars.org"
+                                    :username :env/clojars_username
+                                    :password :env/clojars_password
+                                    :sign-releases false}]]
   :aliases {"gen" ["with-profile" "dev" "run" "-m" "tonos.client.codegen/generate"]
             "test" ["with-profile" "dev,gen" "test"]
             "install" ["with-profile" "gen" "install"]

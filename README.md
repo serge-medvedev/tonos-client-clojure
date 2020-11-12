@@ -1,4 +1,5 @@
 [![Clojars Project](https://img.shields.io/clojars/v/org.clojars.serge-medvedev/tonos-client.svg)](https://clojars.org/org.clojars.serge-medvedev/tonos-client)
+![Testing](https://github.com/serge-medvedev/tonos-client-clojure/workflows/tests/badge.svg)
 
 # Clojure bindings to TON OS SDK's Core Client Library
 

@@ -1,0 +1,25 @@
+name: release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+
+      - uses: ./.github/actions/package
+        env:
+          FUNDING_WALLET_CONFIG: ${{ secrets.FUNDING_WALLET_CONFIG }}
+          CLOJARS_USERNAME: serge-medvedev
+          CLOJARS_PASSWORD: ${{ secrets.CLOJARS_DEPLOY_TOKEN }}
+        with:
+          mode: release
+          version: ${{ steps.vars.outputs.tag }}
+

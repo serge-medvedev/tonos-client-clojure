@@ -1,0 +1,16 @@
+name: 'package'
+description: 'Runs tests and/or builds a JAR and uploads it to clojars.org'
+author: 'serge-medvedev'
+inputs:
+  mode:
+    description: '"tests", "release" or "snapshot"'
+  version:
+    description: 'JAR version to be published ("release" mode only)'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.mode }}
+    - ${{ inputs.version }}
+
