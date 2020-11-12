@@ -1,4 +1,4 @@
-[![Clojars Project](https://img.shields.io/clojars/v/org.clojars.serge-medvedev/tonos-client.svg)](https://clojars.org/org.clojars.serge-medvedev/tonos-client)
+[![Clojars Project](https://img.shields.io/clojars/v/tonos-client.svg)](https://clojars.org/tonos-client)
 ![Testing](https://github.com/serge-medvedev/tonos-client-clojure/workflows/tests/badge.svg)
 
 # Clojure bindings to TON OS SDK's Core Client Library
@@ -7,7 +7,7 @@
 
 Clojure is a modern and powerful functional programming language. A few great products use it for configuration and a whole lot more are written in it. The former case was the primary motivation to create this bindings library: to provide a native way to interact with the TON blockchain from within configuration pipelines of such event processing systems as [Riemann](https://riemann.io/) (written and configurable via Clojure) and [Apache Storm](https://storm.apache.org/) (supports Clojure-based DSL for configuration).
 
-Having that in place, one can, for example, alter the behavior of his/her event processing pipelines depending on the blockchain state or change that state based on event patterns analysis. Since both Riemann and Apache Storm fit for arbitrary computations, the number of possible use cases is huge. 
+Having that in place, one can, for example, alter the behavior of his/her event processing pipelines depending on the blockchain state or change that state based on event patterns analysis. Since both Riemann and Apache Storm fit for arbitrary computations, the number of possible use cases is huge.
 
 ## Usage
 ### Prerequisites
@@ -19,7 +19,7 @@ Having that in place, one can, for example, alter the behavior of his/her event 
   ```
 ### Example
 ```clojure
-[org.clojars.serge-medvedev/tonos-client "1.0.0-SNAPSHOT"]
+[tonos-client "1.0.0-SNAPSHOT"]
 
 ; In the ns statement:
 (ns my.ns
