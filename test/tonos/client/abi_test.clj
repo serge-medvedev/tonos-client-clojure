@@ -119,7 +119,8 @@
                              :time 1599458364291
                              :expire 1599458404}
                     :name "returnValue"
-                    :value {:id "0x0000000000000000000000000000000000000000000000000000000000000000"}}]
+                    :value {:id 0}}]
       (is (-> (abi/decode-message-body! *context* params)
+              (update-in [:value :id] read-string)
               (= expected))))))
 

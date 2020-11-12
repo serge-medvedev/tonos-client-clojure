@@ -9,7 +9,9 @@
 
 (defn- read-json-rc
   [f]
-  (-> f io/resource slurp (json/read-str :key-fn keyword)))
+  (try
+    (-> f io/resource slurp (json/read-str :key-fn keyword))
+    (catch Exception _ nil)))
 
 (def ^:const dev-net-config "{\"network\":{\"server_address\":\"https://net.ton.dev\"}}")
 (def ^:const main-net-config "{\"network\":{\"server_address\":\"https://main.ton.dev\"}}")
@@ -38,7 +40,10 @@
   ([context account]
    (fund-account context account nil))
   ([context account value]
-   (let [params {:message_encode_params {:abi {:type "Serialized"
+   (when (nil? funding-wallet)
+     (throw (Exception. "funding wallet config is missing - \"paid\" tests can't be run")))
+
+   (let [params {:message_encode_params {:abi {:type "Contract"
                                                :value (:abi funding-wallet)}
                                          :address (:address funding-wallet)
                                          :call_set {:function_name "sendTransaction"
