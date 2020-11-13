@@ -43,7 +43,7 @@
    (when (nil? funding-wallet)
      (throw (Exception. "funding wallet config is missing - \"paid\" tests can't be run")))
 
-   (let [params {:message_encode_params {:abi {:type "Contract"
+   (let [params {:message_encode_params {:abi {:type "Serialized"
                                                :value (:abi funding-wallet)}
                                          :address (:address funding-wallet)
                                          :call_set {:function_name "sendTransaction"
