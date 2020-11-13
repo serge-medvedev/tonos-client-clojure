@@ -1,4 +1,4 @@
-[![Clojars Project](https://img.shields.io/clojars/v/tonos-client.svg)](https://clojars.org/tonos-client)
+[![Clojars Project](https://img.shields.io/clojars/vpre/tonos-client.svg)](https://clojars.org/tonos-client)
 ![Testing](https://github.com/serge-medvedev/tonos-client-clojure/workflows/tests/badge.svg)
 
 # Clojure bindings to TON OS SDK's Core Client Library
@@ -12,14 +12,13 @@ Having that in place, one can, for example, alter the behavior of his/her event 
 ## Usage
 ### Prerequisites
 - _libton_client.so_ is accessible somewhere at well-known locations
-  ```bash
-  $ wget http://sdkbinaries-ws.tonlabs.io/tonclient_1_1_0_linux.gz -O tonclient.gz \
-    && gunzip tonclient.gz \
-    && mv tonclient /usr/lib/libton_client.so
+  ```console
+  # wget http://sdkbinaries-ws.tonlabs.io/tonclient_1_1_0_linux.gz -O /usr/lib/libton_client.so.gz \
+    && gunzip /usr/lib/libton_client.so.gz
   ```
 ### Example
 ```clojure
-[tonos-client "1.1.0-SNAPSHOT"]
+[tonos-client "1.1.0"]
 
 ; In the ns statement:
 (ns my.ns
@@ -86,7 +85,7 @@ __Although this library is useful by itself, various wrappers and DSLs are expec
 The simplest way to build the library and run the tests is by having Docker installed.
 
 When ready, build the image:
-```shell
+```console
 $ docker build -t tonos-client-clojure .
 ```
 
