@@ -38,15 +38,15 @@
                             :send_events true}
           shard-block-id (->> (processing/send-message *context* params)
                               (filter #(and (-> % :params-json (contains? :shard_block_id))
-                                            (= (:response-type %) 0)))
+                                            (-> % :response-type (= 0))))
                               first
                               :params-json
                               :shard_block_id)]
       (is (not (nil? shard-block-id)))
       (let [params {:abi events-abi
-                   :message (:message *encoded*)
-                   :shard_block_id shard-block-id
-                   :send_events true}
+                    :message (:message *encoded*)
+                    :shard_block_id shard-block-id
+                    :send_events true}
             result (->> (processing/wait-for-transaction *context* params)
                         (reduce #(if (-> %2 :params-json :transaction :status_name (= "finalized"))
                                      (assoc %1 :finalized true)
