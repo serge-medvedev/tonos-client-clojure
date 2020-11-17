@@ -37,8 +37,9 @@
     (let [params {:message (:message *encoded*)
                             :send_events true}
           shard-block-id (->> (processing/send-message *context* params)
-                              (filter #(and (-> % :params-json (contains? :shard_block_id))
-                                            (-> % :response-type (= 0))))
+                              (filter (fn [msg]
+                                        (and (-> msg :params-json (contains? :shard_block_id))
+                                             (-> msg :response-type (= 0)))))
                               first
                               :params-json
                               :shard_block_id)]
@@ -48,9 +49,10 @@
                     :shard_block_id shard-block-id
                     :send_events true}
             result (->> (processing/wait-for-transaction *context* params)
-                        (reduce #(if (-> %2 :params-json :transaction :status_name (= "finalized"))
-                                     (assoc %1 :finalized true)
-                                     %1)
+                        (reduce (fn [acc msg]
+                                  (if (-> msg :params-json :transaction :status_name (= "finalized"))
+                                      (assoc acc :finalized true)
+                                      acc))
                                 {:finalized false}))]
       (is (= result {:finalized true}))))))
 
@@ -59,11 +61,12 @@
     (let [params {:message_encode_params *message-encode-params*
                   :send_events true}
           result (->> (processing/process-message *context* params)
-                      (reduce #(cond
-                                 (-> %2 :params-json :type (= "WillSend")) (update %1 :WillSend inc)
-                                 (-> %2 :params-json :type (= "DidSend")) (update %1 :DidSend inc)
-                                 (-> %2 :params-json :transaction :status_name (= "finalized")) (assoc %1 :finalized true)
-                                 :else %1)
+                      (reduce (fn [acc msg]
+                                (cond
+                                  (-> msg :params-json :type (= "WillSend")) (update acc :WillSend inc)
+                                  (-> msg :params-json :type (= "DidSend")) (update acc :DidSend inc)
+                                  (-> msg :params-json :transaction :status_name (= "finalized")) (assoc acc :finalized true)
+                                  :else acc))
                               {:WillSend 0 :DidSend 0 :finalized false}))]
       (is (= result {:WillSend 1 :DidSend 1 :finalized true})))))
 
