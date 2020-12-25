@@ -13,12 +13,12 @@ Having that in place, one can, for example, alter the behavior of his/her event 
 ### Prerequisites
 - _libton_client.so_ is accessible somewhere at well-known locations
   ```console
-  # wget http://sdkbinaries-ws.tonlabs.io/tonclient_1_4_0_linux.gz -O /usr/lib/libton_client.so.gz \
+  # wget http://sdkbinaries-ws.tonlabs.io/tonclient_1_5_0_linux.gz -O /usr/lib/libton_client.so.gz \
     && gunzip /usr/lib/libton_client.so.gz
   ```
 ### Example
 ```clojure
-[tonos-client "1.4.0"]
+[tonos-client "1.5.0"]
 
 ; In the ns statement:
 (ns my.ns
@@ -63,7 +63,7 @@ Kinda verbose, isn't it? In fact, the pattern above is so common that there's a 
 (-> (processing/process-message! context params)
     println)
 ```
-In such case, functions always return the last event data, either result or an error object. Both versions might have their uses (see `process-message-test` and how `process-message` is being called in `fund-account`, for example).
+In such case, the function blocks until the underlying call is finished. Both versions might have their uses (see `process-message-test` and how `process-message` is being called in `fund-account`, for example).
 
 One might point out that usage of lazy sequences comes with a bit of boilerplate code but when you realize the full potential of the approach, you gladly ignore that little drawback. __Higher order functions__ applicability worths a lot by itself. Just think: when blockchain events are represented by a lazy sequence, they become a subject for mapping, reducing, filtering and other useful functional techniques.
 
