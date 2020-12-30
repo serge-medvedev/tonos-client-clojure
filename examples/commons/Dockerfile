@@ -13,7 +13,7 @@ RUN lein new app example
 
 WORKDIR /usr/src/example
 
-RUN lein change :dependencies conj '[tonos-client "1.3.0"]'
+RUN lein change :dependencies conj '[tonos-client "1.4.0"]'
 
 RUN lein deps
 
