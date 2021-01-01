@@ -20,7 +20,7 @@
   (testing "getting client version"
     (is (-> (client/version! *context*)
             :version
-            (= "1.5.1")))))
+            (= "1.5.2")))))
 
 (deftest api-reference-test
   (testing "getting api reference"
