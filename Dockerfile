@@ -6,6 +6,10 @@ RUN gunzip /usr/lib/libton_client.so.gz
 
 WORKDIR /usr/src
 
+COPY project.clj project.clj
+
+RUN lein deps
+
 COPY . .
 
 RUN lein test :free
