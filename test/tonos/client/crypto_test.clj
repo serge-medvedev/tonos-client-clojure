@@ -40,7 +40,7 @@
     (let [params {:xprv "xprv9s21ZrQH143K3PBHjRFACygw9K1AA8k2jTRkEDbuHX8MfTP4XxifWQj1xqqxsk8tkxCNgkJGQZUz8R5zQytHL3Kkco5WAhDB89i9r38DBrt"}]
       (is (-> (crypto/hdkey-public-from-xprv! *context* params)
               :public
-              (= "033675d6aaa8ebef3adab9ac79af58eb975b10dd46067c904747018b46bc88f956"))))))
+              (= "64bf9f1f883ec5e6cb79a1eb95eca0ab1875425cfd5485e9d8e1d47a34de477b"))))))
 
 (deftest hdkey-secret-from-xprv-test
   (testing "getting a secret key"
