@@ -74,3 +74,51 @@
               :config_boc
               string?)))))
 
+(deftest encode-boc-test
+  (letfn [(write-b         [value]      {:type "Integer" :size 1 :value value})
+          (write-u128      [value]      {:type "Integer" :size 128 :value (str value)})
+          (write-i         [value size] {:type "Integer" :size size :value value})
+          (write-i8        [value]      (write-i value 8))
+          (write-u8        [value]      (write-i value 8))
+          (write-bitstring [value]      {:type "BitString" :value value})
+          (write-cell      [write]      {:type "Cell" :builder write})]
+    (let [expected-boc "te6ccgEBAgEAKQABL7/f4EAAAAAAAAAAAG2m0us0F8ViiEjLZAEAF7OJx0AnACRgJH/bsA=="]
+      (testing "creation of a boc out of parts"
+        (let [params {:builder [(write-b 1)
+                                (write-b 0)
+                                (write-u8 255)
+                                (write-i8 127)
+                                (write-i8 -127)
+                                (write-u128 123456789123456789)
+                                (write-bitstring "8A_")
+                                (write-bitstring "x{8A0_}")
+                                (write-bitstring "123")
+                                (write-bitstring "x2d9_")
+                                (write-bitstring "80_")
+                                (write-cell [(write-bitstring "n101100111000")
+                                             (write-bitstring "N100111000")
+                                             (write-i -1 3)
+                                             (write-i 2 3)
+                                             (write-i 312 16)
+                                             (write-i "0x123" 16)
+                                             (write-i "0x123" 16)
+                                             (write-i "-0x123" 16)])]}]
+          (is (-> (boc/encode-boc! *context* params)
+                  :boc
+                  (= expected-boc)))))
+      (testing "creation of a boc out of parts (using a cell boc)"
+        (let [params {:builder [(write-b 1)
+                                (write-b 0)
+                                (write-u8 255)
+                                (write-i8 127)
+                                (write-i8 -127)
+                                (write-u128 123456789123456789)
+                                (write-bitstring "8A_")
+                                (write-bitstring "x{8A0_}")
+                                (write-bitstring "123")
+                                (write-bitstring "x2d9_")
+                                (write-bitstring "80_")
+                                {:type "CellBoc" :boc "te6ccgEBAQEADgAAF7OJx0AnACRgJH/bsA=="}]}]
+          (is (-> (boc/encode-boc! *context* params)
+                  :boc
+                  (= expected-boc))))))))
