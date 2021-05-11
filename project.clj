@@ -1,4 +1,4 @@
-(defproject tonos-client "1.13.0-SNAPSHOT"
+(defproject tonos-client "1.14.1-SNAPSHOT"
   :description "Clojure bindings to TON OS SDK's Core Client Library"
   :url "https://github.com/serge-medvedev/tonos-client-clojure"
   :license {:name "Eclipse Public License"
