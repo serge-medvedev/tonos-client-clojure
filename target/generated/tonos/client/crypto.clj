@@ -344,3 +344,48 @@
       last
       :params-json))
 
+(def register-encryption-box
+  (partial request "crypto.register_encryption_box"))
+(defn register-encryption-box!
+  [& args]
+  (-> (apply register-encryption-box args)
+      doall
+      last
+      :params-json))
+
+(def remove-encryption-box
+  (partial request "crypto.remove_encryption_box"))
+(defn remove-encryption-box!
+  [& args]
+  (-> (apply remove-encryption-box args)
+      doall
+      last
+      :params-json))
+
+(def encryption-box-get-info
+  (partial request "crypto.encryption_box_get_info"))
+(defn encryption-box-get-info!
+  [& args]
+  (-> (apply encryption-box-get-info args)
+      doall
+      last
+      :params-json))
+
+(def encryption-box-encrypt
+  (partial request "crypto.encryption_box_encrypt"))
+(defn encryption-box-encrypt!
+  [& args]
+  (-> (apply encryption-box-encrypt args)
+      doall
+      last
+      :params-json))
+
+(def encryption-box-decrypt
+  (partial request "crypto.encryption_box_decrypt"))
+(defn encryption-box-decrypt!
+  [& args]
+  (-> (apply encryption-box-decrypt args)
+      doall
+      last
+      :params-json))
+
