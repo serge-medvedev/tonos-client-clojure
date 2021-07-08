@@ -131,3 +131,57 @@
       last
       :params-json))
 
+(def create-block-iterator
+  (partial request "net.create_block_iterator"))
+(defn create-block-iterator!
+  [& args]
+  (-> (apply create-block-iterator args)
+      doall
+      last
+      :params-json))
+
+(def resume-block-iterator
+  (partial request "net.resume_block_iterator"))
+(defn resume-block-iterator!
+  [& args]
+  (-> (apply resume-block-iterator args)
+      doall
+      last
+      :params-json))
+
+(def create-transaction-iterator
+  (partial request "net.create_transaction_iterator"))
+(defn create-transaction-iterator!
+  [& args]
+  (-> (apply create-transaction-iterator args)
+      doall
+      last
+      :params-json))
+
+(def resume-transaction-iterator
+  (partial request "net.resume_transaction_iterator"))
+(defn resume-transaction-iterator!
+  [& args]
+  (-> (apply resume-transaction-iterator args)
+      doall
+      last
+      :params-json))
+
+(def iterator-next
+  (partial request "net.iterator_next"))
+(defn iterator-next!
+  [& args]
+  (-> (apply iterator-next args)
+      doall
+      last
+      :params-json))
+
+(def remove-iterator
+  (partial request "net.remove_iterator"))
+(defn remove-iterator!
+  [& args]
+  (-> (apply remove-iterator args)
+      doall
+      last
+      :params-json))
+
