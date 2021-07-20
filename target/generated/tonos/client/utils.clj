@@ -11,6 +11,15 @@
       last
       :params-json))
 
+(def get-address-type
+  (partial request "utils.get_address_type"))
+(defn get-address-type!
+  [& args]
+  (-> (apply get-address-type args)
+      doall
+      last
+      :params-json))
+
 (def calc-storage-fee
   (partial request "utils.calc_storage_fee"))
 (defn calc-storage-fee!

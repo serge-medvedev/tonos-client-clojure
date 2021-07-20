@@ -74,3 +74,12 @@
       last
       :params-json))
 
+(def decode-account-data
+  (partial request "abi.decode_account_data"))
+(defn decode-account-data!
+  [& args]
+  (-> (apply decode-account-data args)
+      doall
+      last
+      :params-json))
+
