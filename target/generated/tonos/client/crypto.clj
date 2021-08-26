@@ -389,3 +389,12 @@
       last
       :params-json))
 
+(def create-encryption-box
+  (partial request "crypto.create_encryption_box"))
+(defn create-encryption-box!
+  [& args]
+  (-> (apply create-encryption-box args)
+      doall
+      last
+      :params-json))
+
