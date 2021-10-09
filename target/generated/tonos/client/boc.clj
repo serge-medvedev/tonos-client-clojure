@@ -110,3 +110,48 @@
       last
       :params-json))
 
+(def get-code-salt
+  (partial request "boc.get_code_salt"))
+(defn get-code-salt!
+  [& args]
+  (-> (apply get-code-salt args)
+      doall
+      last
+      :params-json))
+
+(def set-code-salt
+  (partial request "boc.set_code_salt"))
+(defn set-code-salt!
+  [& args]
+  (-> (apply set-code-salt args)
+      doall
+      last
+      :params-json))
+
+(def decode-tvc
+  (partial request "boc.decode_tvc"))
+(defn decode-tvc!
+  [& args]
+  (-> (apply decode-tvc args)
+      doall
+      last
+      :params-json))
+
+(def encode-tvc
+  (partial request "boc.encode_tvc"))
+(defn encode-tvc!
+  [& args]
+  (-> (apply encode-tvc args)
+      doall
+      last
+      :params-json))
+
+(def get-compiler-version
+  (partial request "boc.get_compiler_version"))
+(defn get-compiler-version!
+  [& args]
+  (-> (apply get-compiler-version args)
+      doall
+      last
+      :params-json))
+

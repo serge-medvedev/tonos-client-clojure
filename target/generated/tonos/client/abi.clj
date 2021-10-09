@@ -83,3 +83,21 @@
       last
       :params-json))
 
+(def update-initial-data
+  (partial request "abi.update_initial_data"))
+(defn update-initial-data!
+  [& args]
+  (-> (apply update-initial-data args)
+      doall
+      last
+      :params-json))
+
+(def decode-initial-data
+  (partial request "abi.decode_initial_data"))
+(defn decode-initial-data!
+  [& args]
+  (-> (apply decode-initial-data args)
+      doall
+      last
+      :params-json))
+
