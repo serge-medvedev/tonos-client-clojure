@@ -65,6 +65,15 @@
       last
       :params-json))
 
+(def get-boc-depth
+  (partial request "boc.get_boc_depth"))
+(defn get-boc-depth!
+  [& args]
+  (-> (apply get-boc-depth args)
+      doall
+      last
+      :params-json))
+
 (def get-code-from-tvc
   (partial request "boc.get_code_from_tvc"))
 (defn get-code-from-tvc!
