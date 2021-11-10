@@ -101,3 +101,12 @@
       last
       :params-json))
 
+(def decode-boc
+  (partial request "abi.decode_boc"))
+(defn decode-boc!
+  [& args]
+  (-> (apply decode-boc args)
+      doall
+      last
+      :params-json))
+
