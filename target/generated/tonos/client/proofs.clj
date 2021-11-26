@@ -20,3 +20,12 @@
       last
       :params-json))
 
+(def proof-message-data
+  (partial request "proofs.proof_message_data"))
+(defn proof-message-data!
+  [& args]
+  (-> (apply proof-message-data args)
+      doall
+      last
+      :params-json))
+
