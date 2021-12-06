@@ -92,6 +92,15 @@
       last
       :params-json))
 
+(def encode-initial-data
+  (partial request "abi.encode_initial_data"))
+(defn encode-initial-data!
+  [& args]
+  (-> (apply encode-initial-data args)
+      doall
+      last
+      :params-json))
+
 (def decode-initial-data
   (partial request "abi.decode_initial_data"))
 (defn decode-initial-data!
