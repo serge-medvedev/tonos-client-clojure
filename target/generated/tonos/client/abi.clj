@@ -119,3 +119,12 @@
       last
       :params-json))
 
+(def encode-boc
+  (partial request "abi.encode_boc"))
+(defn encode-boc!
+  [& args]
+  (-> (apply encode-boc args)
+      doall
+      last
+      :params-json))
+
