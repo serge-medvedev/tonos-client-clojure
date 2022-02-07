@@ -59,6 +59,15 @@
 (def subscribe-collection
   (partial request "net.subscribe_collection"))
 
+(def subscribe
+  (partial request "net.subscribe"))
+(defn subscribe!
+  [& args]
+  (-> (apply subscribe args)
+      doall
+      last
+      :params-json))
+
 (def suspend
   (partial request "net.suspend"))
 (defn suspend!
