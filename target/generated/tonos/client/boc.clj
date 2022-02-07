@@ -155,6 +155,15 @@
       last
       :params-json))
 
+(def encode-external-in-message
+  (partial request "boc.encode_external_in_message"))
+(defn encode-external-in-message!
+  [& args]
+  (-> (apply encode-external-in-message args)
+      doall
+      last
+      :params-json))
+
 (def get-compiler-version
   (partial request "boc.get_compiler_version"))
 (defn get-compiler-version!
