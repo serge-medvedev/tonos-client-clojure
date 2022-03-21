@@ -299,6 +299,69 @@
       last
       :params-json))
 
+(def create-crypto-box
+  (partial request "crypto.create_crypto_box"))
+(defn create-crypto-box!
+  [& args]
+  (-> (apply create-crypto-box args)
+      doall
+      last
+      :params-json))
+
+(def remove-crypto-box
+  (partial request "crypto.remove_crypto_box"))
+(defn remove-crypto-box!
+  [& args]
+  (-> (apply remove-crypto-box args)
+      doall
+      last
+      :params-json))
+
+(def get-crypto-box-info
+  (partial request "crypto.get_crypto_box_info"))
+(defn get-crypto-box-info!
+  [& args]
+  (-> (apply get-crypto-box-info args)
+      doall
+      last
+      :params-json))
+
+(def get-crypto-box-seed-phrase
+  (partial request "crypto.get_crypto_box_seed_phrase"))
+(defn get-crypto-box-seed-phrase!
+  [& args]
+  (-> (apply get-crypto-box-seed-phrase args)
+      doall
+      last
+      :params-json))
+
+(def get-signing-box-from-crypto-box
+  (partial request "crypto.get_signing_box_from_crypto_box"))
+(defn get-signing-box-from-crypto-box!
+  [& args]
+  (-> (apply get-signing-box-from-crypto-box args)
+      doall
+      last
+      :params-json))
+
+(def get-encryption-box-from-crypto-box
+  (partial request "crypto.get_encryption_box_from_crypto_box"))
+(defn get-encryption-box-from-crypto-box!
+  [& args]
+  (-> (apply get-encryption-box-from-crypto-box args)
+      doall
+      last
+      :params-json))
+
+(def clear-crypto-box-secret-cache
+  (partial request "crypto.clear_crypto_box_secret_cache"))
+(defn clear-crypto-box-secret-cache!
+  [& args]
+  (-> (apply clear-crypto-box-secret-cache args)
+      doall
+      last
+      :params-json))
+
 (def register-signing-box
   (partial request "crypto.register_signing_box"))
 (defn register-signing-box!
