@@ -20,6 +20,15 @@
       last
       :params-json))
 
+(def config
+  (partial request "client.config"))
+(defn config!
+  [& args]
+  (-> (apply config args)
+      doall
+      last
+      :params-json))
+
 (def build-info
   (partial request "client.build_info"))
 (defn build-info!
