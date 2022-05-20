@@ -1,7 +1,7 @@
 FROM clojure:lein-bullseye
 
-ADD https://raw.githubusercontent.com/tonlabs/TON-SDK/1.33.1/tools/api.json /tmp/api.json
-ADD http://sdkbinaries-ws.tonlabs.io/tonclient_1_33_1_linux.gz /usr/lib/libton_client.so.gz
+ADD https://raw.githubusercontent.com/tonlabs/TON-SDK/1.34.0/tools/api.json /tmp/api.json
+ADD http://sdkbinaries-ws.tonlabs.io/tonclient_1_34_0_linux.gz /usr/lib/libton_client.so.gz
 RUN gunzip /usr/lib/libton_client.so.gz
 
 WORKDIR /usr/src
