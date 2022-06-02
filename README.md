@@ -13,12 +13,12 @@ Having that in place, one can, for example, alter the behavior of his/her event 
 ### Prerequisites
 - _libton_client.so_ is accessible somewhere at well-known locations
   ```console
-  # wget http://sdkbinaries-ws.tonlabs.io/tonclient_1_34_0_linux.gz -O /usr/lib/libton_client.so.gz \
+  # wget http://sdkbinaries-ws.tonlabs.io/tonclient_1_34_2_linux.gz -O /usr/lib/libton_client.so.gz \
     && gunzip /usr/lib/libton_client.so.gz
   ```
 ### Example
 ```clojure
-[tonos-client "1.34.0"]
+[tonos-client "1.34.2"]
 
 ; In the ns statement:
 (ns my.ns
@@ -26,7 +26,7 @@ Having that in place, one can, for example, alter the behavior of his/her event 
             [tonos.client.client :as client]))
 
 ; In the code:
-(let [config "{\"network\":{\"server_address\":\"https://net.ton.dev\"}}"
+(let [config "{\"network\":{\"endpoints\":[\"eri01.net.everos.dev\"]}}"
       context (core/create-context config)]
   (println (client/version! context))
   (core/destroy-context context))
