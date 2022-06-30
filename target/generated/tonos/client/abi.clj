@@ -128,3 +128,12 @@
       last
       :params-json))
 
+(def calc-function-id
+  (partial request "abi.calc_function_id"))
+(defn calc-function-id!
+  [& args]
+  (-> (apply calc-function-id args)
+      doall
+      last
+      :params-json))
+
