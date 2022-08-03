@@ -13,12 +13,12 @@ Having that in place, one can, for example, alter the behavior of his/her event 
 ### Prerequisites
 - _libton_client.so_ is accessible somewhere at well-known locations
   ```console
-  # wget http://sdkbinaries-ws.tonlabs.io/tonclient_1_36_1_linux.gz -O /usr/lib/libton_client.so.gz \
+  # wget http://sdkbinaries-ws.tonlabs.io/tonclient_1_37_0_linux.gz -O /usr/lib/libton_client.so.gz \
     && gunzip /usr/lib/libton_client.so.gz
   ```
 ### Example
 ```clojure
-[tonos-client "1.36.1"]
+[tonos-client "1.37.0"]
 
 ; In the ns statement:
 (ns my.ns
