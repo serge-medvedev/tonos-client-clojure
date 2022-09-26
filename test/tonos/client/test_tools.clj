@@ -13,8 +13,8 @@
     (-> f io/resource slurp (json/read-str :key-fn keyword))
     (catch Exception _ nil)))
 
-(def ^:const dev-net-config "{\"network\":{\"server_address\":\"https://net.ton.dev\"}}")
-(def ^:const main-net-config "{\"network\":{\"server_address\":\"https://main.ton.dev\"}}")
+(def ^:const dev-net-config "{\"network\":{\"server_address\":\"https://devnet.evercloud.dev/d61ac7417de44bdbb5446a4efe0690c7\"}}")
+(def ^:const main-net-config "{\"network\":{\"server_address\":\"https://mainnet.evercloud.dev/d61ac7417de44bdbb5446a4efe0690c7\"}}")
 (def test-data (read-json-rc "test-data.json"))
 (def funding-wallet (read-json-rc "funding-wallet.json"))
 (def keypair {:public "134c67910aa0bd4410e0b62379d517af13df99ba04764bca06e0ba86c736b80a",
