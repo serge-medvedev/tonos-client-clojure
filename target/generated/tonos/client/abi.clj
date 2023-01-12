@@ -137,3 +137,12 @@
       last
       :params-json))
 
+(def get-signature-data
+  (partial request "abi.get_signature_data"))
+(defn get-signature-data!
+  [& args]
+  (-> (apply get-signature-data args)
+      doall
+      last
+      :params-json))
+
