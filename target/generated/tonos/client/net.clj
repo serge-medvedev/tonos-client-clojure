@@ -194,3 +194,12 @@
       last
       :params-json))
 
+(def get-signature-id
+  (partial request "net.get_signature_id"))
+(defn get-signature-id!
+  [& args]
+  (-> (apply get-signature-id args)
+      doall
+      last
+      :params-json))
+

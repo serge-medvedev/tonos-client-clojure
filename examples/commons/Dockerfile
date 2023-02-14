@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     gzip \
     wget
 
-RUN wget http://sdkbinaries-ws.tonlabs.io/tonclient_1_40_0_linux.gz -O /usr/lib/libton_client.so.gz \
+RUN wget http://sdkbinaries-ws.tonlabs.io/tonclient_1_41_0_linux.gz -O /usr/lib/libton_client.so.gz \
     && gunzip /usr/lib/libton_client.so.gz
 
 WORKDIR /usr/src
@@ -13,7 +13,7 @@ RUN lein new app example
 
 WORKDIR /usr/src/example
 
-RUN lein change :dependencies conj '[tonos-client "1.40.0"]'
+RUN lein change :dependencies conj '[tonos-client "1.41.0"]'
 
 RUN lein deps
 
