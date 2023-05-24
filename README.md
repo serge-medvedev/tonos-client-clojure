@@ -1,11 +1,11 @@
 [![Clojars Project](https://img.shields.io/clojars/vpre/tonos-client.svg)](https://clojars.org/tonos-client)
 ![Testing](https://github.com/serge-medvedev/tonos-client-clojure/workflows/tests/badge.svg)
 
-# Clojure bindings to TON OS SDK's Core Client Library
+# Clojure bindings to EVER OS SDK's Core Client Library
 
 ## Why Clojure?
 
-Clojure is a modern and powerful functional programming language. A few great products use it for configuration and a whole lot more are written in it. The former case was the primary motivation to create this bindings library: to provide a native way to interact with the TON blockchain from within configuration pipelines of such event processing systems as [Riemann](https://riemann.io/) (written and configurable via Clojure) and [Apache Storm](https://storm.apache.org/) (supports Clojure-based DSL for configuration).
+Clojure is a modern and powerful functional programming language. A few great products use it for configuration and a whole lot more are written in it. The former case was the primary motivation to create this bindings library: to provide a native way to interact with the Everscale blockchain from within configuration pipelines of such event processing systems as [Riemann](https://riemann.io/) (written and configurable via Clojure) and [Apache Storm](https://storm.apache.org/) (supports Clojure-based DSL for configuration).
 
 Having that in place, one can, for example, alter the behavior of his/her event processing pipelines depending on the blockchain state or change that state based on event patterns analysis. Since both Riemann and Apache Storm fit for arbitrary computations, the number of possible use cases is huge.
 
@@ -34,7 +34,7 @@ Having that in place, one can, for example, alter the behavior of his/her event 
 
 ## Features
 
-At its heart this bindings library utilizes JNA and Clojure's async channels to harness the power of the TON OS SDK's Core Client Library.
+At its heart this bindings library utilizes JNA and Clojure's async channels to harness the power of the EVER OS SDK's Core Client Library.
 The whole asynchronisity is abstracted away from the user via such a powerful construct of Clojure as __lazy sequences__, which leads to uniformity and consistency of user experience, being the main focus since the bindings code itself is completely auto-generated.
 
 Let's see how it looks like.
