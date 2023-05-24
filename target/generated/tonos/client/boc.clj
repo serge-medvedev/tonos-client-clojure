@@ -2,6 +2,15 @@
 (ns tonos.client.boc
   (:require [tonos.client.core :refer [request]]))
 
+(def decode-tvc
+  (partial request "boc.decode_tvc"))
+(defn decode-tvc!
+  [& args]
+  (-> (apply decode-tvc args)
+      doall
+      last
+      :params-json))
+
 (def parse-message
   (partial request "boc.parse_message"))
 (defn parse-message!
@@ -137,20 +146,20 @@
       last
       :params-json))
 
-(def decode-tvc
-  (partial request "boc.decode_tvc"))
-(defn decode-tvc!
+(def decode-state-init
+  (partial request "boc.decode_state_init"))
+(defn decode-state-init!
   [& args]
-  (-> (apply decode-tvc args)
+  (-> (apply decode-state-init args)
       doall
       last
       :params-json))
 
-(def encode-tvc
-  (partial request "boc.encode_tvc"))
-(defn encode-tvc!
+(def encode-state-init
+  (partial request "boc.encode_state_init"))
+(defn encode-state-init!
   [& args]
-  (-> (apply encode-tvc args)
+  (-> (apply encode-state-init args)
       doall
       last
       :params-json))
