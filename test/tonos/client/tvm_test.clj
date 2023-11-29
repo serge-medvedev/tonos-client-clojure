@@ -4,6 +4,7 @@
     [clojure.string :as string]
     [tonos.client.test-tools :as tt]
     [tonos.client.abi :as abi]
+    [tonos.client.boc :as boc]
     [tonos.client.crypto :as crypto]
     [tonos.client.tvm :as tvm]
     [tonos.client.core :as core]))
@@ -15,9 +16,9 @@
 (defn- tf
   [f]
   (binding [*context* (core/create-context tt/dev-net-config)]
-    (let [params {:state_init {:type "StateInit"
-                               :code (-> tt/test-data :elector :code)
-                               :data (-> tt/test-data :elector :data)}}]
+    (let [params (boc/encode-state-init! *context* {:type "StateInit"
+                                                    :code (-> tt/test-data :elector :code)
+                                                    :data (-> tt/test-data :elector :data)})]
       (binding [*elector-encoded* (abi/encode-account! *context* params)]
         (f)
         (core/destroy-context *context*)))))
