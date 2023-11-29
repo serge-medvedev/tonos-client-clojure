@@ -3,6 +3,7 @@
     [clojure.test :refer :all]
     [tonos.client.test-tools :as tt]
     [tonos.client.abi :as abi]
+    [tonos.client.boc :as boc]
     [tonos.client.crypto :as crypto]
     [tonos.client.core :as core]))
 
@@ -26,9 +27,9 @@
 
 (deftest encode-account-test
   (testing "account data encoding"
-    (let [params {:state_init {:type "StateInit"
-                               :code (-> tt/test-data :elector :code)
-                               :data (-> tt/test-data :elector :data)}}]
+    (let [params (boc/encode-state-init! *context* {:type "StateInit"
+                                                    :code (-> tt/test-data :elector :code)
+                                                    :data (-> tt/test-data :elector :data)})]
       (is (-> (abi/encode-account! *context* params)
               :id
               (= "1089829edf8ad38e474ce9e93123b3281e52c3faff0214293cbb5981ee7b3092"))))))
